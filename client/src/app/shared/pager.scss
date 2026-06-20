@@ -1,0 +1,35 @@
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.pager-btn {
+  background: none;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking);
+}
+
+.pager-btn:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+.pager-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pager-info {
+  font-size: 0.8rem;
+  color: var(--muted);
+  letter-spacing: var(--tracking);
+}

@@ -1,0 +1,64 @@
+<div class="cart-header">
+  <h1>{{ 'cart.title' | translate }}</h1>
+  <a class="continue" routerLink="/">{{ 'cart.continue' | translate }}</a>
+</div>
+
+@if (items().length === 0) {
+  <p class="muted">{{ 'cart.empty' | translate }} <a routerLink="/">{{ 'cart.browse' | translate }}</a></p>
+} @else {
+  <table class="cart-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>{{ 'cart.colProduct' | translate }}</th>
+        <th class="num">{{ 'cart.colPrice' | translate }}</th>
+        <th class="qty-col">{{ 'cart.colQuantity' | translate }}</th>
+        <th class="num">{{ 'cart.colSubtotal' | translate }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of items(); track item.productId) {
+        <tr>
+          <td class="thumb">
+            @if (item.imageDataUri) {
+              <img [src]="item.imageDataUri" [alt]="item.name" />
+            }
+          </td>
+          <td>
+            <a class="name" [routerLink]="['/product', item.productId]">{{ item.name }}</a>
+          </td>
+          <td class="num">{{ item.price | currency }}</td>
+          <td class="qty-col">
+            <div class="stepper">
+              <button type="button" (click)="decrement(item.productId, item.quantity)" [attr.aria-label]="'cart.decrease' | translate">−</button>
+              <input
+                type="number"
+                min="1"
+                [value]="item.quantity"
+                (change)="onQuantityChange(item.productId, $any($event.target).value)"
+              />
+              <button type="button" (click)="increment(item.productId, item.quantity)" [attr.aria-label]="'cart.increase' | translate">+</button>
+            </div>
+          </td>
+          <td class="num">{{ item.price * item.quantity | currency }}</td>
+          <td>
+            <button type="button" class="remove" (click)="remove(item.productId)">{{ 'cart.remove' | translate }}</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <div class="cart-footer">
+    <button type="button" class="clear" (click)="clear()">{{ 'cart.emptyCart' | translate }}</button>
+    <div class="total">
+      <span>{{ 'cart.total' | translate }}</span>
+      <strong>{{ total() | currency }}</strong>
+    </div>
+  </div>
+
+  <div class="cart-checkout">
+    <a class="btn-ink" routerLink="/checkout">{{ 'cart.checkout' | translate }}</a>
+  </div>
+}

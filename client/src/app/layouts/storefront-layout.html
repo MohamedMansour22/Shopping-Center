@@ -1,0 +1,15 @@
+<header class="storefront-topbar">
+  <a class="brand" routerLink="/">{{ 'layout.brand' | translate }}</a>
+  <app-settings-controls />
+  <a class="cart-link" routerLink="/cart">
+    {{ 'layout.cart' | translate }}@if (cartCount() > 0) {<span class="cart-badge">{{ cartCount() }}</span>}
+  </a>
+</header>
+
+<main class="storefront-content">
+  <router-outlet />
+</main>
+
+<footer class="storefront-footer">
+  <span>{{ 'layout.footer' | translate }}</span>
+</footer>

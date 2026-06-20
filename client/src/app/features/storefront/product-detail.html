@@ -1,0 +1,72 @@
+<a class="back" routerLink="/">{{ 'detail.back' | translate }}</a>
+
+@if (loading()) {
+  <p class="muted">{{ 'common.loading' | translate }}</p>
+} @else if (error()) {
+  <p class="error">{{ error()! | translate }}</p>
+} @else if (product(); as p) {
+  <div class="detail">
+    <div class="detail-gallery">
+      <div class="detail-image">
+        @if (p.images.length > 0) {
+          <img [src]="p.images[selectedImage()].imageDataUri" [alt]="p.name" />
+        } @else {
+          <div class="no-image">{{ 'common.noImage' | translate }}</div>
+        }
+      </div>
+
+      @if (p.images.length > 1) {
+        <div class="thumbs">
+          @for (img of p.images; track img.id; let i = $index) {
+            <button
+              type="button"
+              class="thumb"
+              [class.active]="i === selectedImage()"
+              (click)="selectImage(i)"
+            >
+              <img [src]="img.imageDataUri" [alt]="p.name + ' ' + (i + 1)" />
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="detail-info">
+      <h1>{{ p.name }}</h1>
+      <p class="price">{{ p.price | currency }}</p>
+
+      @if (p.category) {
+        <p class="category">{{ p.category }}</p>
+      }
+
+      @if (p.stockQuantity > 0) {
+        <p class="stock in">{{ 'detail.inStock' | translate: { count: p.stockQuantity } }}</p>
+      } @else {
+        <p class="stock out">{{ 'detail.outOfStock' | translate }}</p>
+      }
+
+      @if (p.description) {
+        <p class="description">{{ p.description }}</p>
+      }
+
+      @if (p.stockQuantity > 0) {
+        <div class="add-row">
+          <label class="qty">
+            {{ 'common.qty' | translate }}
+            <input
+              type="number"
+              min="1"
+              [max]="p.stockQuantity"
+              [value]="quantity()"
+              (input)="setQuantity($any($event.target).value)"
+            />
+          </label>
+          <button type="button" class="add-btn" (click)="addToCart()">{{ 'common.addToCart' | translate }}</button>
+        </div>
+        @if (added()) {
+          <p class="added-msg">{{ 'detail.added' | translate }} <a routerLink="/cart">{{ 'common.viewCart' | translate }}</a></p>
+        }
+      }
+    </div>
+  </div>
+}

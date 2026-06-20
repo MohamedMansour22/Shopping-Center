@@ -1,0 +1,84 @@
+<div class="page-header">
+  <h1>{{ (isEdit() ? 'pform.editTitle' : 'pform.newTitle') | translate }}</h1>
+  <a class="btn-secondary" routerLink="/admin/products">{{ 'pform.back' | translate }}</a>
+</div>
+
+@if (loading()) {
+  <p>{{ 'common.loading' | translate }}</p>
+} @else {
+  <form class="product-form" [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      {{ 'pform.name' | translate }}
+      <input type="text" formControlName="name" />
+    </label>
+
+    <label>
+      {{ 'pform.description' | translate }}
+      <textarea rows="3" formControlName="description"></textarea>
+    </label>
+
+    <div class="row">
+      <label>
+        {{ 'pform.price' | translate }}
+        <input type="number" step="0.01" min="0" formControlName="price" />
+      </label>
+
+      <label>
+        {{ 'pform.stock' | translate }}
+        <input type="number" min="0" formControlName="stockQuantity" />
+      </label>
+    </div>
+
+    <label>
+      {{ 'pform.category' | translate }}
+      <input type="text" formControlName="category" />
+    </label>
+
+    <div class="images-field">
+      <span class="images-label">
+        {{ 'pform.images' | translate }}
+        <span class="images-count">{{ totalImages() }}/{{ maxImages }}</span>
+      </span>
+
+      @if (totalImages() > 0) {
+        <div class="image-thumbs">
+          @for (img of existingImages(); track img.id; let i = $index) {
+            <div class="image-thumb">
+              <img [src]="img.imageDataUri" alt="" />
+              @if (i === 0) {
+                <span class="primary-tag">{{ 'pform.primary' | translate }}</span>
+              }
+              <button type="button" class="remove" (click)="removeExistingImage(img.id)" [attr.aria-label]="'pform.removeImage' | translate">×</button>
+            </div>
+          }
+          @for (img of newImages(); track img.url; let i = $index) {
+            <div class="image-thumb">
+              <img [src]="img.url" alt="" />
+              @if (existingImages().length === 0 && i === 0) {
+                <span class="primary-tag">{{ 'pform.primary' | translate }}</span>
+              }
+              <button type="button" class="remove" (click)="removeNewImage(i)" [attr.aria-label]="'pform.removeImage' | translate">×</button>
+            </div>
+          }
+        </div>
+      }
+
+      @if (canAddMore()) {
+        <label class="add-images">
+          <span>{{ 'pform.addImages' | translate }}</span>
+          <input type="file" accept="image/*" multiple (change)="onFilesSelected($event)" />
+        </label>
+      }
+    </div>
+
+    @if (error()) {
+      <p class="error">{{ error()! | translate }}</p>
+    }
+
+    <div class="actions">
+      <button type="submit" class="btn-primary" [disabled]="submitting()">
+        {{ (submitting() ? 'pform.saving' : (isEdit() ? 'pform.saveChanges' : 'pform.create')) | translate }}
+      </button>
+    </div>
+  </form>
+}

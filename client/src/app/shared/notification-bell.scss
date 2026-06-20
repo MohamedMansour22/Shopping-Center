@@ -1,0 +1,168 @@
+/* Host must be flex (not the default inline) so .bell carries no inline
+   line-box descender gap, which otherwise pushes the icon above the
+   nav's centered baseline. */
+:host {
+  display: inline-flex;
+  align-items: center;
+}
+
+.bell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.bell-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  /* Match the icon size to the topbar links so the bell sits inline with them. */
+  font-size: 1.15rem;
+  color: inherit;
+}
+
+/* Tint the bell red while there are unread notifications. */
+.bell-btn.has-unread {
+  color: #e11d48;
+}
+
+.icon {
+  display: block;
+}
+
+.badge {
+  position: absolute;
+  top: -2px;
+  inset-inline-end: -4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #e11d48;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Click-away layer behind the dropdown. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  inset-inline-end: 0;
+  width: 320px;
+  max-height: 420px;
+  overflow-y: auto;
+  z-index: 41;
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.panel-title {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking);
+}
+
+.link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+}
+.link:hover {
+  color: var(--ink);
+}
+
+.empty {
+  margin: 0;
+  padding: 1.4rem 0.8rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+}
+.item:last-child {
+  border-bottom: none;
+}
+.item:hover {
+  background: var(--bg-warm);
+}
+.item.unread {
+  background: var(--bg-warm);
+}
+.item.unread .title {
+  font-weight: 600;
+}
+
+.row1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.title {
+  font-size: 0.85rem;
+}
+
+.dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e11d48;
+}
+
+.msg {
+  margin-top: 2px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.time {
+  margin-top: 4px;
+  font-size: 0.7rem;
+  color: var(--muted);
+}

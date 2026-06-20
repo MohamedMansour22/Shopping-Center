@@ -1,0 +1,190 @@
+.detail-header {
+  margin-bottom: 1.5rem;
+}
+
+.back {
+  color: var(--ink);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking);
+  font-size: 0.72rem;
+}
+
+.back:hover {
+  color: var(--muted);
+}
+
+.detail-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1.25rem;
+}
+
+.detail-top h1 {
+  margin: 0 0 0.35rem;
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: var(--ink);
+}
+
+.muted {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 720px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  background: var(--bg);
+}
+
+.card h2 {
+  margin: 0 0 1.25rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking);
+  color: var(--muted);
+  font-weight: 400;
+}
+
+dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.55rem 1.5rem;
+}
+
+dt {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.92rem;
+}
+
+.status-edit select {
+  width: 100%;
+  appearance: auto;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.save {
+  margin-top: 1.25rem;
+  width: 100%;
+  cursor: pointer;
+}
+
+.save:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.saved {
+  margin: 0.75rem 0 0;
+  color: var(--ink);
+  font-size: 0.82rem;
+}
+
+.error {
+  color: var(--danger);
+  font-size: 0.82rem;
+  margin: 0.75rem 0 0;
+}
+
+/* Status badge (shared look with the list). */
+.status-badge {
+  display: inline-block;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.status-badge.delivered {
+  border-color: var(--ink);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.items-card {
+  padding-bottom: 0.5rem;
+}
+
+.items {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.items th,
+.items td {
+  text-align: start;
+  padding: 0.55rem 0.6rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9rem;
+}
+
+.items th {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking);
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.items th.num,
+.items td.num {
+  text-align: end;
+  white-space: nowrap;
+}
+
+.total-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking);
+  font-size: 0.72rem;
+}
+
+.total-value {
+  font-family: var(--font-serif);
+  color: var(--ink);
+  font-size: 1.2rem;
+}
+
+.items tfoot td {
+  border-bottom: 0;
+  padding-top: 0.9rem;
+}

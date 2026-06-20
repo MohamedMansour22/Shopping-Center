@@ -1,0 +1,99 @@
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h1 {
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.count {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.grid {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg);
+}
+
+.grid th,
+.grid td {
+  text-align: start;
+  padding: 0.7rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.grid th.num,
+.grid td.num {
+  text-align: end;
+}
+
+/* Center all column headers (overrides the .num header alignment). */
+.grid thead th,
+.grid thead th.num {
+  text-align: center;
+}
+
+.grid .desc {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 0.15rem;
+}
+
+.grid .when {
+  white-space: nowrap;
+}
+
+.order-row {
+  cursor: pointer;
+}
+
+.order-row:hover {
+  background: var(--bg-warm);
+}
+
+/* Read-only status pill in the list (editing happens on the details screen). */
+.status-badge {
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.status-badge.delivered {
+  border-color: var(--ink);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.view-cell {
+  white-space: nowrap;
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking);
+}
+
+.order-row:hover .view-cell {
+  color: var(--ink);
+}
+
+.empty {
+  color: var(--muted);
+}
+
+.error {
+  color: var(--danger);
+  font-size: 0.85rem;
+}

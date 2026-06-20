@@ -1,0 +1,128 @@
+/* ===== Design tokens (editorial / minimal fashion aesthetic) ===== */
+:root {
+  /* Colour — monochrome + warm neutrals */
+  --ink: #1b1a18;          /* near-black: text, buttons */
+  --ink-hover: #000000;
+  --muted: #8a847b;        /* secondary text */
+  --bg: #ffffff;
+  --bg-warm: #f6f4ef;      /* warm off-white page / image backdrop */
+  --line: #e7e2d9;         /* hairline dividers */
+  --danger: #9b2c2c;
+  --ok: #3f6b51;
+  --on-ink: #ffffff;       /* text/icons placed on an --ink-filled surface */
+  --text-soft: #4a4640;    /* long-form body copy */
+
+  /* Type */
+  --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Jost', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Shape */
+  --radius: 2px;
+  --tracking: 0.14em;      /* letter-spacing for uppercase labels */
+}
+
+/* ===== Dark theme — token overrides applied when <html> has .dark ===== */
+html.dark {
+  --ink: #ededea;
+  --ink-hover: #ffffff;
+  --muted: #9a948b;
+  --bg: #1d1c1a;
+  --bg-warm: #141312;
+  --line: #34312c;
+  --danger: #d98b8b;
+  --ok: #8fb89c;
+  --on-ink: #1b1a18;
+  --text-soft: #c9c4bb;
+}
+
+/* ===== Arabic / RTL — cursive script: disable tracking, swap fonts ===== */
+[dir='rtl'] {
+  --tracking: 0;
+  --font-sans: 'Noto Sans Arabic', 'Jost', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Amiri', 'Cormorant Garamond', Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  color: var(--ink);
+  background: var(--bg-warm);
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+a {
+  color: inherit;
+}
+
+/* Shared helpers */
+.u-label {
+  text-transform: uppercase;
+  letter-spacing: var(--tracking);
+  font-size: 0.72rem;
+}
+
+/* Solid ink button, used across storefront */
+.btn-ink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.6rem;
+  background: var(--ink);
+  color: var(--on-ink);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.btn-ink:hover {
+  background: var(--ink-hover);
+}
+
+.btn-ink:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Outline / ghost button */
+.btn-line {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.6rem;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.btn-line:hover {
+  background: var(--ink);
+  color: var(--on-ink);
+}

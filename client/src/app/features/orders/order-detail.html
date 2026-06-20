@@ -1,0 +1,85 @@
+<div class="detail-header">
+  <a class="back" routerLink="/admin/orders">{{ 'odetail.back' | translate }}</a>
+</div>
+
+@if (loading()) {
+  <p>{{ 'common.loading' | translate }}</p>
+} @else if (error() && !order()) {
+  <p class="error">{{ error()! | translate }}</p>
+} @else if (order(); as o) {
+  <div class="detail-top">
+    <div>
+      <h1>{{ 'odetail.title' | translate }}</h1>
+      <p class="muted">{{ 'odetail.placedOn' | translate }} {{ o.createdAtUtc | date: 'medium' }}</p>
+    </div>
+    <span class="status-badge" [class.delivered]="o.statusId === 2">{{ statusKey(o.status) | translate }}</span>
+  </div>
+
+  <div class="detail-grid">
+    <section class="card">
+      <h2>{{ 'odetail.customer' | translate }}</h2>
+      <dl>
+        <dt>{{ 'checkout.fullName' | translate }}</dt>
+        <dd>{{ o.customerName }}</dd>
+        <dt>{{ 'checkout.email' | translate }}</dt>
+        <dd>{{ o.customerEmail }}</dd>
+        <dt>{{ 'checkout.phone' | translate }}</dt>
+        <dd>{{ o.customerPhone }}</dd>
+        <dt>{{ 'checkout.address' | translate }}</dt>
+        <dd>{{ o.shippingAddress }}</dd>
+      </dl>
+    </section>
+
+    <section class="card">
+      <h2>{{ 'odetail.status' | translate }}</h2>
+      <label class="status-edit">
+        <select [disabled]="saving()" (change)="onStatusChange($any($event.target).value)">
+          @for (s of statuses(); track s.id) {
+            <option [value]="s.id" [selected]="s.id === selectedStatusId()">{{ statusKey(s.name) | translate }}</option>
+          }
+        </select>
+      </label>
+
+      @if (error()) {
+        <p class="error">{{ error()! | translate }}</p>
+      }
+      @if (saved()) {
+        <p class="saved">{{ 'odetail.saved' | translate }}</p>
+      }
+
+      <button type="button" class="btn-ink save" [disabled]="!dirty() || saving()" (click)="save()">
+        {{ (saving() ? 'odetail.saving' : 'odetail.save') | translate }}
+      </button>
+    </section>
+  </div>
+
+  <section class="card items-card">
+    <h2>{{ 'odetail.items' | translate }}</h2>
+    <table class="items">
+      <thead>
+        <tr>
+          <th>{{ 'olist.itemProduct' | translate }}</th>
+          <th class="num">{{ 'olist.itemUnitPrice' | translate }}</th>
+          <th class="num">{{ 'olist.itemQty' | translate }}</th>
+          <th class="num">{{ 'olist.itemLineTotal' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of o.items; track item.productId) {
+          <tr>
+            <td>{{ item.productName }}</td>
+            <td class="num">{{ item.unitPrice | currency }}</td>
+            <td class="num">{{ item.quantity }}</td>
+            <td class="num">{{ item.lineTotal | currency }}</td>
+          </tr>
+        }
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" class="num total-label">{{ 'olist.colTotal' | translate }}</td>
+          <td class="num total-value">{{ o.totalAmount | currency }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+}

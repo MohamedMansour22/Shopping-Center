@@ -1,0 +1,22 @@
+<header class="topbar">
+  <a class="brand" routerLink="/admin/products">{{ 'admin.brand' | translate }}</a>
+  @if (isLoggedIn()) {
+    <nav>
+      <a routerLink="/admin/products">{{ 'admin.products' | translate }}</a>
+      <a routerLink="/admin/orders">{{ 'admin.orders' | translate }}</a>
+      <a class="view-store" routerLink="/">{{ 'admin.viewStore' | translate }}</a>
+      <app-notification-bell />
+      <span class="user">{{ email() }}</span>
+      <app-settings-controls />
+      <button type="button" (click)="logout()">{{ 'admin.logout' | translate }}</button>
+    </nav>
+  } @else {
+    <nav>
+      <app-settings-controls />
+    </nav>
+  }
+</header>
+
+<main class="content">
+  <router-outlet />
+</main>

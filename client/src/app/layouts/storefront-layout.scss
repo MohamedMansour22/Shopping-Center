@@ -1,0 +1,84 @@
+.storefront-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 2.5rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.storefront-topbar .brand {
+  color: var(--ink);
+  text-decoration: none;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 1.05rem;
+  letter-spacing: 0.32em;
+}
+
+/* Wide tracking disconnects cursive Arabic letters. */
+:host-context([dir='rtl']) .storefront-topbar .brand {
+  letter-spacing: 0;
+}
+
+/* Settings controls (theme + language) sit between brand and cart. */
+.storefront-topbar app-settings-controls {
+  margin-inline-start: auto;
+  margin-inline-end: 1.75rem;
+}
+
+.storefront-topbar .cart-link {
+  flex-shrink: 0;
+}
+
+.storefront-topbar .cart-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking);
+  font-size: 0.78rem;
+}
+
+.storefront-topbar .cart-link:hover {
+  color: var(--muted);
+}
+
+.storefront-topbar .cart-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.3rem;
+  height: 1.3rem;
+  padding: 0 0.4rem;
+  background: var(--ink);
+  color: var(--on-ink);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  letter-spacing: 0;
+}
+
+.storefront-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 2.5rem 4rem;
+  min-height: 60vh;
+  background: var(--bg-warm);
+}
+
+.storefront-footer {
+  margin-top: 0;
+  padding: 2.5rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking);
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+}

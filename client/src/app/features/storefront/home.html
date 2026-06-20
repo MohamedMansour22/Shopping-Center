@@ -1,0 +1,76 @@
+<section class="hero">
+  <p class="eyebrow">{{ 'home.eyebrow' | translate }}</p>
+  <h1>{{ 'home.title' | translate }}</h1>
+  <input
+    class="search"
+    type="search"
+    [placeholder]="'home.searchPlaceholder' | translate"
+    [value]="search()"
+    (input)="onSearch($event)"
+  />
+</section>
+
+@if (loading()) {
+  <p class="muted">{{ 'home.loading' | translate }}</p>
+} @else if (error()) {
+  <p class="error">{{ error()! | translate }}</p>
+} @else if (products().length === 0) {
+  @if (search().trim()) {
+    <p class="muted">{{ 'home.noMatch' | translate: { term: search() } }}</p>
+  } @else {
+    <p class="muted">{{ 'home.empty' | translate }}</p>
+  }
+} @else {
+  <div class="product-grid">
+    @for (p of products(); track p.id) {
+      <div class="card">
+        <a class="card-link" [routerLink]="['/product', p.id]">
+          <div class="card-image">
+            @if (p.imageDataUri) {
+              <img [src]="p.imageDataUri" [alt]="p.name" />
+            } @else {
+              <div class="no-image">{{ 'common.noImage' | translate }}</div>
+            }
+          </div>
+          <div class="card-body">
+            <span class="name">{{ p.name }}</span>
+            <span class="price">{{ p.price | currency }}</span>
+          </div>
+        </a>
+
+        <div class="card-actions">
+          @if (p.stockQuantity > 0) {
+            <label class="qty">
+              {{ 'common.qty' | translate }}
+              <input
+                type="number"
+                min="1"
+                [max]="p.stockQuantity"
+                [value]="qty(p.id)"
+                (input)="setQty(p, $any($event.target).value)"
+              />
+            </label>
+            <button type="button" class="add-btn" (click)="addToCart(p)">{{ 'common.addToCart' | translate }}</button>
+            @if (addedId() === p.id) {
+              <p class="added-msg">{{ 'home.added' | translate }} <a routerLink="/cart">{{ 'common.viewCart' | translate }}</a></p>
+            }
+          } @else {
+            <span class="sold-out">{{ 'common.soldOut' | translate }}</span>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (hasMore()) {
+    <div class="load-more">
+      <button type="button" class="load-more-btn" (click)="loadMore()" [disabled]="loadingMore()">
+        @if (loadingMore()) {
+          {{ 'home.loading' | translate }}
+        } @else {
+          {{ 'home.loadMore' | translate }}
+        }
+      </button>
+    </div>
+  }
+}

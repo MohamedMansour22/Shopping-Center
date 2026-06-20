@@ -1,0 +1,63 @@
+<div class="page-header">
+  <h1>{{ 'plist.title' | translate }}</h1>
+  <a class="btn-primary" routerLink="/admin/products/new">{{ 'plist.newProduct' | translate }}</a>
+</div>
+
+@if (loading()) {
+  <p>{{ 'common.loading' | translate }}</p>
+} @else {
+  @if (error()) {
+    <p class="error">{{ error()! | translate }}</p>
+  }
+  @if (!error() && products().length === 0) {
+    <p class="empty">{{ 'plist.empty' | translate }}</p>
+  }
+  @if (products().length > 0) {
+  <table class="grid">
+    <thead>
+      <tr>
+        <th></th>
+        <th>{{ 'plist.colName' | translate }}</th>
+        <th>{{ 'plist.colCategory' | translate }}</th>
+        <th class="num">{{ 'plist.colPrice' | translate }}</th>
+        <th class="num">{{ 'plist.colStock' | translate }}</th>
+        <th class="actions-col">{{ 'plist.colActions' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (p of products(); track p.id) {
+        <tr [class.hidden-row]="p.isHidden">
+          <td class="thumb">
+            @if (p.imageDataUri) {
+              <img [src]="p.imageDataUri" [alt]="p.name" />
+            }
+          </td>
+          <td>
+            <strong>{{ p.name }}</strong>
+            @if (p.isHidden) {
+              <span class="badge-hidden">{{ 'plist.hidden' | translate }}</span>
+            }
+            <div class="desc">{{ p.description }}</div>
+          </td>
+          <td>{{ p.category }}</td>
+          <td class="num">{{ p.price | currency }}</td>
+          <td class="num">{{ p.stockQuantity }}</td>
+          <td class="actions-col">
+            <a class="link-edit" [routerLink]="['/admin/products', p.id, 'edit']">{{ 'plist.edit' | translate }}</a>
+            <button type="button" class="link-toggle" (click)="toggleVisibility(p)">
+              {{ (p.isHidden ? 'plist.show' : 'plist.hide') | translate }}
+            </button>
+            <button type="button" class="link-delete" (click)="remove(p.id, p.name)">{{ 'plist.delete' | translate }}</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+  <app-pager
+    [page]="page()"
+    [pageSize]="pageSize"
+    [totalCount]="totalCount()"
+    (pageChange)="goToPage($event)"
+  />
+  }
+}

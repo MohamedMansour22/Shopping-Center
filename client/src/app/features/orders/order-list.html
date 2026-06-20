@@ -1,0 +1,59 @@
+<div class="page-header">
+  <h1>{{ 'olist.title' | translate }}</h1>
+  @if (!loading() && totalCount() > 0) {
+    <span class="count">{{ (totalCount() === 1 ? 'olist.countOne' : 'olist.countMany') | translate: { count: totalCount() } }}</span>
+  }
+</div>
+
+@if (loading()) {
+  <p>{{ 'common.loading' | translate }}</p>
+} @else {
+  @if (error()) {
+    <p class="error">{{ error()! | translate }}</p>
+  }
+  @if (!error() && orders().length === 0) {
+    <p class="empty">{{ 'olist.empty' | translate }}</p>
+  }
+  @if (orders().length > 0) {
+    <table class="grid">
+      <thead>
+        <tr>
+          <th class="when">{{ 'olist.colDate' | translate }}</th>
+          <th>{{ 'olist.colCustomer' | translate }}</th>
+          <th>{{ 'olist.colContact' | translate }}</th>
+          <th class="num">{{ 'olist.colItems' | translate }}</th>
+          <th class="num">{{ 'olist.colTotal' | translate }}</th>
+          <th>{{ 'olist.colStatus' | translate }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (o of orders(); track o.id) {
+          <tr class="order-row" [routerLink]="['/admin/orders', o.id]">
+            <td class="when">{{ o.createdAtUtc | date: 'medium' }}</td>
+            <td>
+              <strong>{{ o.customerName }}</strong>
+              <div class="desc">{{ o.shippingAddress }}</div>
+            </td>
+            <td>
+              <div>{{ o.customerEmail }}</div>
+              <div class="desc">{{ o.customerPhone }}</div>
+            </td>
+            <td class="num">{{ o.itemCount }}</td>
+            <td class="num">{{ o.totalAmount | currency }}</td>
+            <td>
+              <span class="status-badge" [class.delivered]="o.statusId === 2">{{ statusKey(o.status) | translate }}</span>
+            </td>
+            <td class="num view-cell">{{ 'olist.viewDetails' | translate }} ›</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    <app-pager
+      [page]="page()"
+      [pageSize]="pageSize"
+      [totalCount]="totalCount()"
+      (pageChange)="goToPage($event)"
+    />
+  }
+}

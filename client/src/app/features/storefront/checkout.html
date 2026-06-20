@@ -1,0 +1,83 @@
+@if (placedOrder(); as order) {
+  <div class="confirmation">
+    <h1>{{ 'checkout.thanksTitle' | translate }}</h1>
+    <p class="lead">{{ 'checkout.thanksBody' | translate: { name: order.name } }}</p>
+    <p class="muted">{{ 'checkout.thanksEmail' | translate: { email: order.email } }}</p>
+    <a class="btn-ink" routerLink="/">{{ 'checkout.continueShopping' | translate }}</a>
+  </div>
+} @else {
+  <div class="checkout-header">
+    <h1>{{ 'checkout.title' | translate }}</h1>
+    <a class="back" routerLink="/cart">{{ 'checkout.backToCart' | translate }}</a>
+  </div>
+
+  @if (cartEmpty()) {
+    <p class="muted">
+      {{ 'cart.empty' | translate }}
+      <a routerLink="/">{{ 'cart.browse' | translate }}</a>
+    </p>
+  } @else {
+    <div class="checkout-grid">
+      <form class="details" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <h2>{{ 'checkout.detailsTitle' | translate }}</h2>
+
+        <label>
+          {{ 'checkout.fullName' | translate }}
+          <input type="text" formControlName="fullName" autocomplete="name" [class.invalid]="invalid('fullName')" />
+          @if (invalid('fullName')) {
+            <span class="field-error">{{ 'checkout.errName' | translate }}</span>
+          }
+        </label>
+
+        <label>
+          {{ 'checkout.email' | translate }}
+          <input type="email" formControlName="email" autocomplete="email" [class.invalid]="invalid('email')" />
+          @if (invalid('email')) {
+            <span class="field-error">{{ 'checkout.errEmail' | translate }}</span>
+          }
+        </label>
+
+        <label>
+          {{ 'checkout.phone' | translate }}
+          <input type="tel" formControlName="phone" autocomplete="tel" [class.invalid]="invalid('phone')" />
+          @if (invalid('phone')) {
+            <span class="field-error">{{ 'checkout.errPhone' | translate }}</span>
+          }
+        </label>
+
+        <label>
+          {{ 'checkout.address' | translate }}
+          <textarea formControlName="address" rows="3" autocomplete="street-address" [class.invalid]="invalid('address')"></textarea>
+          @if (invalid('address')) {
+            <span class="field-error">{{ 'checkout.errAddress' | translate }}</span>
+          }
+        </label>
+
+        @if (error()) {
+          <p class="form-error">{{ error()! | translate }}</p>
+        }
+
+        <button type="submit" class="btn-ink place-order" [disabled]="submitting()">
+          {{ (submitting() ? 'checkout.placing' : 'checkout.placeOrder') | translate }}
+        </button>
+      </form>
+
+      <aside class="summary">
+        <h2>{{ 'checkout.summaryTitle' | translate }}</h2>
+        <ul class="summary-items">
+          @for (item of items(); track item.productId) {
+            <li>
+              <span class="qty">{{ item.quantity }}×</span>
+              <span class="name">{{ item.name }}</span>
+              <span class="line-total">{{ item.price * item.quantity | currency }}</span>
+            </li>
+          }
+        </ul>
+        <div class="summary-total">
+          <span>{{ 'cart.total' | translate }}</span>
+          <strong>{{ total() | currency }}</strong>
+        </div>
+      </aside>
+    </div>
+  }
+}

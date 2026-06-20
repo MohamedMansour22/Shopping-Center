@@ -1,0 +1,52 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1.5rem;
+  /* Fixed dark chrome so the admin bar reads correctly in both themes. */
+  background: #1b1a18;
+  color: #fff;
+}
+
+.brand {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.topbar nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.topbar nav a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.topbar nav .view-store {
+  color: #c9c3b8;
+}
+
+.topbar nav .user {
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.topbar nav button {
+  background: transparent;
+  border: 1px solid #475569;
+  color: #e2e8f0;
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.content {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
