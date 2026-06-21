@@ -87,9 +87,9 @@ public class OrderService : IOrderService
     }
 
     public async Task<PagedResult<OrderDto>> GetPagedAsync(
-        int page, int pageSize, CancellationToken cancellationToken = default)
+        int page, int pageSize, OrderListFilter filter, CancellationToken cancellationToken = default)
     {
-        var (items, totalCount) = await _orders.GetPagedAsync(page, pageSize, cancellationToken);
+        var (items, totalCount) = await _orders.GetPagedAsync(page, pageSize, filter, cancellationToken);
         return new PagedResult<OrderDto>
         {
             Items = items.Select(ToDto).ToList(),

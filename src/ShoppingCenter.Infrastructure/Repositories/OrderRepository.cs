@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ShoppingCenter.Application.DTOs;
 using ShoppingCenter.Application.Interfaces;
 using ShoppingCenter.Domain.Entities;
 using ShoppingCenter.Infrastructure.Data;
@@ -22,10 +23,35 @@ public class OrderRepository : IOrderRepository
     }
 
     public async Task<(IReadOnlyList<Order> Items, int TotalCount)> GetPagedAsync(
-        int page, int pageSize, CancellationToken cancellationToken = default)
+        int page, int pageSize, OrderListFilter filter, CancellationToken cancellationToken = default)
     {
         var query = _db.Orders.AsNoTracking();
 
+        // DateFrom/DateTo arrive as absolute instants: the client converts the operator's chosen
+        // local calendar days into UTC boundaries (start-of-day, and exclusive start-of-next-day),
+        // so the range matches the operator's day rather than the UTC day. Captured into locals so
+        // EF parameterises them.
+        if (filter.DateFrom is { } from)
+        {
+            var fromUtc = from.UtcDateTime;
+            query = query.Where(o => o.CreatedAtUtc >= fromUtc);
+        }
+        if (filter.DateTo is { } toExclusive)
+        {
+            var toUtc = toExclusive.UtcDateTime;
+            query = query.Where(o => o.CreatedAtUtc < toUtc);
+        }
+        if (!string.IsNullOrWhiteSpace(filter.CustomerName))
+        {
+            var pattern = LikePattern.Contains(filter.CustomerName.Trim());
+            query = query.Where(o => EF.Functions.Like(o.CustomerName, pattern));
+        }
+        if (filter.StatusId is { } statusId)
+        {
+            query = query.Where(o => o.StatusId == statusId);
+        }
+
+        // Count comes off the SAME filtered query, so TotalCount/HasMore match the filtered set.
         var totalCount = await query.CountAsync(cancellationToken);
 
         // ThenBy(Id) gives a stable total order so Skip/Take never duplicates or drops an order

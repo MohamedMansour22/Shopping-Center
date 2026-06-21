@@ -31,16 +31,28 @@ public class OrdersController : ControllerBase
     }
 
     // Admin-only: list placed orders (newest first), server-side paginated.
+    // Optional filters: date range (dateFrom/dateTo), customer name (substring), and status id.
     [HttpGet]
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult<PagedResult<OrderDto>>> GetAll(
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = DefaultPageSize,
+        [FromQuery] DateTimeOffset? dateFrom = null,
+        [FromQuery] DateTimeOffset? dateTo = null,
+        [FromQuery] string? customerName = null,
+        [FromQuery] int? statusId = null,
         CancellationToken ct = default)
     {
         page = page < 1 ? 1 : page;
         pageSize = Math.Clamp(pageSize, 1, MaxPageSize);
-        var orders = await _orderService.GetPagedAsync(page, pageSize, ct);
+        var filter = new OrderListFilter
+        {
+            DateFrom = dateFrom,
+            DateTo = dateTo,
+            CustomerName = customerName,
+            StatusId = statusId
+        };
+        var orders = await _orderService.GetPagedAsync(page, pageSize, filter, ct);
         return Ok(orders);
     }
 

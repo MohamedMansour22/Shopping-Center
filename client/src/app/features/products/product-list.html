@@ -3,6 +3,43 @@
   <a class="btn-primary" routerLink="/admin/products/new">{{ 'plist.newProduct' | translate }}</a>
 </div>
 
+<div class="filters">
+  <label class="filter-field">
+    <span>{{ 'plist.filterName' | translate }}</span>
+    <input
+      type="search"
+      [value]="name()"
+      (input)="onNameInput($any($event.target).value)"
+      (keyup.enter)="search()"
+    />
+  </label>
+  <label class="filter-field">
+    <span>{{ 'plist.filterCategory' | translate }}</span>
+    <input
+      type="search"
+      [value]="category()"
+      (input)="onCategoryInput($any($event.target).value)"
+      (keyup.enter)="search()"
+    />
+  </label>
+  <label class="filter-field">
+    <span>{{ 'plist.filterVisibility' | translate }}</span>
+    <select [value]="visibility()" (change)="onVisibilityChange($any($event.target).value)">
+      <option value="All">{{ 'plist.filterAll' | translate }}</option>
+      <option value="VisibleOnly">{{ 'plist.filterVisible' | translate }}</option>
+      <option value="HiddenOnly">{{ 'plist.filterHidden' | translate }}</option>
+    </select>
+  </label>
+  <button type="button" class="search-btn" (click)="search()">
+    {{ 'plist.search' | translate }}
+  </button>
+  @if (hasActiveFilters()) {
+    <button type="button" class="clear-filters" (click)="clearFilters()">
+      {{ 'plist.clearFilters' | translate }}
+    </button>
+  }
+</div>
+
 @if (loading()) {
   <p>{{ 'common.loading' | translate }}</p>
 } @else {
@@ -10,7 +47,7 @@
     <p class="error">{{ error()! | translate }}</p>
   }
   @if (!error() && products().length === 0) {
-    <p class="empty">{{ 'plist.empty' | translate }}</p>
+    <p class="empty">{{ (hasActiveFilters() ? 'plist.noMatch' : 'plist.empty') | translate }}</p>
   }
   @if (products().length > 0) {
   <table class="grid">

@@ -19,6 +19,9 @@ export interface Product {
   createdAtUtc: string;
 }
 
+// Admin product-list visibility filter; matches the server's ProductVisibilityFilter enum names.
+export type ProductVisibilityFilter = 'All' | 'VisibleOnly' | 'HiddenOnly';
+
 export interface PagedResult<T> {
   items: T[];
   page: number;
@@ -73,6 +76,14 @@ export interface Order {
   status: string;
   items: OrderItem[];
   createdAtUtc: string;
+}
+
+// Admin order-list filters; all optional. Dates are 'YYYY-MM-DD' strings from <input type="date">.
+export interface OrderListFilter {
+  dateFrom?: string;
+  dateTo?: string;
+  customerName?: string;
+  statusId?: number | null;
 }
 
 export interface Notification {

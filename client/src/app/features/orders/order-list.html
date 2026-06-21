@@ -5,6 +5,43 @@
   }
 </div>
 
+<div class="filters">
+  <label class="filter-field">
+    <span>{{ 'olist.filterCustomer' | translate }}</span>
+    <input
+      type="search"
+      [value]="customerName()"
+      (input)="onCustomerNameInput($any($event.target).value)"
+      (keyup.enter)="search()"
+    />
+  </label>
+  <label class="filter-field">
+    <span>{{ 'olist.filterStatus' | translate }}</span>
+    <select [value]="statusId() ?? ''" (change)="onStatusChange($any($event.target).value)">
+      <option value="">{{ 'olist.filterAllStatuses' | translate }}</option>
+      @for (s of statuses(); track s.id) {
+        <option [value]="s.id">{{ statusKey(s.name) | translate }}</option>
+      }
+    </select>
+  </label>
+  <label class="filter-field">
+    <span>{{ 'olist.filterDateFrom' | translate }}</span>
+    <input type="date" [value]="dateFrom()" (change)="onDateFromChange($any($event.target).value)" />
+  </label>
+  <label class="filter-field">
+    <span>{{ 'olist.filterDateTo' | translate }}</span>
+    <input type="date" [value]="dateTo()" (change)="onDateToChange($any($event.target).value)" />
+  </label>
+  <button type="button" class="search-btn" (click)="search()">
+    {{ 'olist.search' | translate }}
+  </button>
+  @if (hasActiveFilters()) {
+    <button type="button" class="clear-filters" (click)="clearFilters()">
+      {{ 'olist.clearFilters' | translate }}
+    </button>
+  }
+</div>
+
 @if (loading()) {
   <p>{{ 'common.loading' | translate }}</p>
 } @else {
@@ -12,7 +49,7 @@
     <p class="error">{{ error()! | translate }}</p>
   }
   @if (!error() && orders().length === 0) {
-    <p class="empty">{{ 'olist.empty' | translate }}</p>
+    <p class="empty">{{ (hasActiveFilters() ? 'olist.noMatch' : 'olist.empty') | translate }}</p>
   }
   @if (orders().length > 0) {
     <table class="grid">
@@ -30,14 +67,14 @@
       <tbody>
         @for (o of orders(); track o.id) {
           <tr class="order-row" [routerLink]="['/admin/orders', o.id]">
-            <td class="when">{{ o.createdAtUtc | date: 'medium' }}</td>
+            <td class="when"><span appLtr>{{ o.createdAtUtc | date: 'medium' }}</span></td>
             <td>
               <strong>{{ o.customerName }}</strong>
-              <div class="desc">{{ o.shippingAddress }}</div>
+              <div class="desc"><span appLtr>{{ o.shippingAddress }}</span></div>
             </td>
             <td>
-              <div>{{ o.customerEmail }}</div>
-              <div class="desc">{{ o.customerPhone }}</div>
+              <div><span appLtr>{{ o.customerEmail }}</span></div>
+              <div class="desc"><span appLtr>{{ o.customerPhone }}</span></div>
             </td>
             <td class="num">{{ o.itemCount }}</td>
             <td class="num">{{ o.totalAmount | currency }}</td>

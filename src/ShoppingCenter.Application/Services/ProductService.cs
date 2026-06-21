@@ -42,11 +42,29 @@ public class ProductService : IProductService
         return products.Select(ToDto).ToList();
     }
 
-    public async Task<PagedResult<ProductDto>> GetPagedAsync(
-        int page, int pageSize, string? search, bool includeHidden, CancellationToken cancellationToken = default)
+    public async Task<PagedResult<ProductDto>> GetStorefrontPageAsync(
+        int page, int pageSize, string? search, CancellationToken cancellationToken = default)
     {
-        var (items, totalCount) = await _repository.GetPagedAsync(page, pageSize, search, includeHidden, cancellationToken);
-        return new PagedResult<ProductDto>
+        // Merchandising policy: hide sold-out products when the customer is browsing, but keep them
+        // discoverable when they're actively searching for something specific.
+        var excludeSoldOut = string.IsNullOrWhiteSpace(search);
+        var (items, totalCount) = await _repository.GetStorefrontPageAsync(
+            page, pageSize, search, excludeSoldOut, cancellationToken);
+        return ToPagedResult(items, totalCount, page, pageSize);
+    }
+
+    public async Task<PagedResult<ProductDto>> GetAdminPageAsync(
+        int page, int pageSize, ProductVisibilityFilter visibility, string? name, string? category,
+        CancellationToken cancellationToken = default)
+    {
+        var (items, totalCount) = await _repository.GetAdminPageAsync(
+            page, pageSize, visibility, name, category, cancellationToken);
+        return ToPagedResult(items, totalCount, page, pageSize);
+    }
+
+    private static PagedResult<ProductDto> ToPagedResult(
+        IReadOnlyList<Product> items, int totalCount, int page, int pageSize) =>
+        new()
         {
             Items = items.Select(ToDto).ToList(),
             Page = page,
@@ -54,7 +72,6 @@ public class ProductService : IProductService
             TotalCount = totalCount,
             HasMore = (long)page * pageSize < totalCount
         };
-    }
 
     public async Task<ProductDto?> GetByIdAsync(Guid id, bool includeHidden, CancellationToken cancellationToken = default)
     {

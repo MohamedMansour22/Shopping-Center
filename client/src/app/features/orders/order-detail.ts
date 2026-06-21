@@ -1,13 +1,14 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { OrderService } from '../../core/order.service';
+import { OrderService, orderStatusKey } from '../../core/order.service';
 import { Order, OrderStatus } from '../../core/models';
 import { TranslatePipe } from '../../core/translate.pipe';
+import { LtrDirective } from '../../shared/ltr.directive';
 
 @Component({
   selector: 'app-order-detail',
-  imports: [RouterLink, CurrencyPipe, DatePipe, TranslatePipe],
+  imports: [RouterLink, CurrencyPipe, DatePipe, TranslatePipe, LtrDirective],
   templateUrl: './order-detail.html',
   styleUrl: './order-detail.scss',
 })
@@ -42,9 +43,7 @@ export class OrderDetail {
     });
   }
 
-  statusKey(name: string): string {
-    return `ostatus.${name.toLowerCase()}`;
-  }
+  readonly statusKey = orderStatusKey;
 
   onStatusChange(value: string): void {
     this.selectedStatusId.set(Number(value));

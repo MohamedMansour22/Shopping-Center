@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ShoppingCenter.Application.DTOs;
 using ShoppingCenter.Application.Interfaces;
 using ShoppingCenter.Domain.Entities;
 using ShoppingCenter.Infrastructure.Data;
@@ -60,25 +61,64 @@ public class ProductRepository : IProductRepository
         }
     }
 
-    public async Task<(IReadOnlyList<Product> Items, int TotalCount)> GetPagedAsync(
-        int page, int pageSize, string? search, bool includeHidden, CancellationToken cancellationToken = default)
+    // Storefront paged read: always visible-only, with a single name-OR-category search term.
+    // excludeSoldOut is a mechanism the service drives from its browse-vs-search policy.
+    public Task<(IReadOnlyList<Product> Items, int TotalCount)> GetStorefrontPageAsync(
+        int page, int pageSize, string? search, bool excludeSoldOut,
+        CancellationToken cancellationToken = default)
     {
-        var query = _db.Products.AsNoTracking();
-        if (!includeHidden)
+        var query = _db.Products.AsNoTracking().Where(p => !p.IsHidden);
+
+        if (excludeSoldOut)
         {
-            query = query.Where(p => !p.IsHidden);
+            query = query.Where(p => p.StockQuantity > 0);
         }
 
+        // Case-insensitive by default under SQL Server's standard collation; matches name OR category.
         if (!string.IsNullOrWhiteSpace(search))
         {
-            var term = search.Trim();
-            // Case-insensitive by default under SQL Server's standard collation; matches name or category.
+            var pattern = LikePattern.Contains(search.Trim());
             query = query.Where(p =>
-                EF.Functions.Like(p.Name, $"%{term}%") ||
-                EF.Functions.Like(p.Category, $"%{term}%"));
+                EF.Functions.Like(p.Name, pattern) ||
+                EF.Functions.Like(p.Category, pattern));
         }
 
-        // Count and slice come off the SAME filtered query, so HasMore stays correct under search.
+        return PageAsync(query, page, pageSize, cancellationToken);
+    }
+
+    // Admin paged read: choose which products to include by visibility, and optionally narrow by
+    // name and/or category (each ANDed). Sold-out products stay visible for stock management.
+    public Task<(IReadOnlyList<Product> Items, int TotalCount)> GetAdminPageAsync(
+        int page, int pageSize, ProductVisibilityFilter visibility, string? name, string? category,
+        CancellationToken cancellationToken = default)
+    {
+        var query = _db.Products.AsNoTracking();
+        query = visibility switch
+        {
+            ProductVisibilityFilter.VisibleOnly => query.Where(p => !p.IsHidden),
+            ProductVisibilityFilter.HiddenOnly => query.Where(p => p.IsHidden),
+            _ => query, // All
+        };
+
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            var pattern = LikePattern.Contains(name.Trim());
+            query = query.Where(p => EF.Functions.Like(p.Name, pattern));
+        }
+
+        if (!string.IsNullOrWhiteSpace(category))
+        {
+            var pattern = LikePattern.Contains(category.Trim());
+            query = query.Where(p => EF.Functions.Like(p.Category, pattern));
+        }
+
+        return PageAsync(query, page, pageSize, cancellationToken);
+    }
+
+    // Shared paging: count and slice come off the SAME filtered query, so HasMore stays correct.
+    private async Task<(IReadOnlyList<Product> Items, int TotalCount)> PageAsync(
+        IQueryable<Product> query, int page, int pageSize, CancellationToken cancellationToken)
+    {
         var totalCount = await query.CountAsync(cancellationToken);
 
         // CreatedAtUtc alone is not a total order (the seeder can share timestamps across rows),

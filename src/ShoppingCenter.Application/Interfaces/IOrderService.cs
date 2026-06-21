@@ -8,7 +8,8 @@ public interface IOrderService
     // Returns (order, null) on success, or (null, error) if a referenced product can't be ordered.
     Task<(OrderDto? Order, string? Error)> CreateAsync(CreateOrderDto dto, CancellationToken cancellationToken = default);
 
-    Task<PagedResult<OrderDto>> GetPagedAsync(int page, int pageSize, CancellationToken cancellationToken = default);
+    Task<PagedResult<OrderDto>> GetPagedAsync(
+        int page, int pageSize, OrderListFilter filter, CancellationToken cancellationToken = default);
 
     Task<OrderDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 

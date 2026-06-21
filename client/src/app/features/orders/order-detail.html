@@ -10,7 +10,7 @@
   <div class="detail-top">
     <div>
       <h1>{{ 'odetail.title' | translate }}</h1>
-      <p class="muted">{{ 'odetail.placedOn' | translate }} {{ o.createdAtUtc | date: 'medium' }}</p>
+      <p class="muted">{{ 'odetail.placedOn' | translate }} <span appLtr>{{ o.createdAtUtc | date: 'medium' }}</span></p>
     </div>
     <span class="status-badge" [class.delivered]="o.statusId === 2">{{ statusKey(o.status) | translate }}</span>
   </div>
@@ -22,11 +22,11 @@
         <dt>{{ 'checkout.fullName' | translate }}</dt>
         <dd>{{ o.customerName }}</dd>
         <dt>{{ 'checkout.email' | translate }}</dt>
-        <dd>{{ o.customerEmail }}</dd>
+        <dd><span appLtr>{{ o.customerEmail }}</span></dd>
         <dt>{{ 'checkout.phone' | translate }}</dt>
-        <dd>{{ o.customerPhone }}</dd>
+        <dd><span appLtr>{{ o.customerPhone }}</span></dd>
         <dt>{{ 'checkout.address' | translate }}</dt>
-        <dd>{{ o.shippingAddress }}</dd>
+        <dd><span appLtr>{{ o.shippingAddress }}</span></dd>
       </dl>
     </section>
 

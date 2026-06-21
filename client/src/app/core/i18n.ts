@@ -47,7 +47,8 @@ export const translations = {
     'home.loadMore': 'Load more',
 
     // Product detail
-    'detail.back': '← Back to products',
+    // Arrow glyph is added direction-aware via CSS (.back::after), not hardcoded here.
+    'detail.back': 'Back to products',
     'detail.inStock': 'In stock ({count})',
     'detail.outOfStock': 'Out of stock',
     'detail.added': '✓ Added to cart —',
@@ -72,7 +73,8 @@ export const translations = {
 
     // Checkout
     'checkout.title': 'Checkout',
-    'checkout.backToCart': '← Back to cart',
+    // Arrow glyph is added direction-aware via CSS (.back::after), not hardcoded here.
+    'checkout.backToCart': 'Back to cart',
     'checkout.detailsTitle': 'Your details',
     'checkout.fullName': 'Full name',
     'checkout.email': 'Email',
@@ -117,6 +119,14 @@ export const translations = {
     'olist.countOne': '1 order',
     'olist.countMany': '{count} orders',
     'olist.empty': 'No orders have been placed yet.',
+    'olist.noMatch': 'No orders match the selected filters.',
+    'olist.filterCustomer': 'Customer name',
+    'olist.filterStatus': 'Status',
+    'olist.filterAllStatuses': 'All statuses',
+    'olist.filterDateFrom': 'From date',
+    'olist.filterDateTo': 'To date',
+    'olist.search': 'Search',
+    'olist.clearFilters': 'Clear filters',
     'olist.colDate': 'Date',
     'olist.colCustomer': 'Customer',
     'olist.colContact': 'Contact',
@@ -135,7 +145,8 @@ export const translations = {
 
     // Admin order details
     'odetail.title': 'Order details',
-    'odetail.back': '← Back to orders',
+    // Arrow glyph is added direction-aware via CSS (.back::after), not hardcoded here.
+    'odetail.back': 'Back to orders',
     'odetail.placedOn': 'Placed on',
     'odetail.customer': 'Customer',
     'odetail.status': 'Status',
@@ -149,7 +160,16 @@ export const translations = {
     // Admin product list
     'plist.title': 'Products',
     'plist.newProduct': '+ New product',
+    'plist.filterName': 'Name',
+    'plist.filterCategory': 'Category',
+    'plist.filterVisibility': 'Show',
+    'plist.filterAll': 'All products',
+    'plist.filterVisible': 'Visible only',
+    'plist.filterHidden': 'Hidden only',
+    'plist.search': 'Search',
+    'plist.clearFilters': 'Clear filters',
     'plist.empty': 'No products yet. Click “New product” to add your first one.',
+    'plist.noMatch': 'No products match the selected filters.',
     'plist.colName': 'Name',
     'plist.colCategory': 'Category',
     'plist.colPrice': 'Price',
@@ -224,7 +244,8 @@ export const translations = {
     'home.loadMore': 'تحميل المزيد',
 
     // Product detail
-    'detail.back': 'العودة إلى المنتجات →',
+    // Arrow glyph is added direction-aware via CSS (.back::after), not hardcoded here.
+    'detail.back': 'العودة إلى المنتجات',
     'detail.inStock': 'متوفّر ({count})',
     'detail.outOfStock': 'غير متوفّر',
     'detail.added': '✓ تمت الإضافة إلى السلة —',
@@ -249,7 +270,8 @@ export const translations = {
 
     // Checkout
     'checkout.title': 'إتمام الشراء',
-    'checkout.backToCart': 'العودة إلى السلة →',
+    // Arrow glyph is added direction-aware via CSS (.back::after), not hardcoded here.
+    'checkout.backToCart': 'العودة إلى السلة',
     'checkout.detailsTitle': 'بياناتك',
     'checkout.fullName': 'الاسم الكامل',
     'checkout.email': 'البريد الإلكتروني',
@@ -294,6 +316,14 @@ export const translations = {
     'olist.countOne': 'طلب واحد',
     'olist.countMany': '{count} طلبات',
     'olist.empty': 'لم يتم تقديم أي طلبات بعد.',
+    'olist.noMatch': 'لا توجد طلبات تطابق عوامل التصفية المحددة.',
+    'olist.filterCustomer': 'اسم العميل',
+    'olist.filterStatus': 'الحالة',
+    'olist.filterAllStatuses': 'كل الحالات',
+    'olist.filterDateFrom': 'من تاريخ',
+    'olist.filterDateTo': 'إلى تاريخ',
+    'olist.search': 'بحث',
+    'olist.clearFilters': 'مسح عوامل التصفية',
     'olist.colDate': 'التاريخ',
     'olist.colCustomer': 'العميل',
     'olist.colContact': 'وسيلة التواصل',
@@ -312,7 +342,8 @@ export const translations = {
 
     // Admin order details
     'odetail.title': 'تفاصيل الطلب',
-    'odetail.back': 'العودة إلى الطلبات →',
+    // Arrow glyph is added direction-aware via CSS (.back::after), not hardcoded here.
+    'odetail.back': 'العودة إلى الطلبات',
     'odetail.placedOn': 'تم الطلب في',
     'odetail.customer': 'العميل',
     'odetail.status': 'الحالة',
@@ -326,7 +357,16 @@ export const translations = {
     // Admin product list
     'plist.title': 'المنتجات',
     'plist.newProduct': '+ منتج جديد',
+    'plist.filterName': 'الاسم',
+    'plist.filterCategory': 'الفئة',
+    'plist.filterVisibility': 'عرض',
+    'plist.filterAll': 'كل المنتجات',
+    'plist.filterVisible': 'المرئية فقط',
+    'plist.filterHidden': 'المخفية فقط',
+    'plist.search': 'بحث',
+    'plist.clearFilters': 'مسح عوامل التصفية',
     'plist.empty': 'لا توجد منتجات بعد. انقر ”منتج جديد“ لإضافة أول منتج.',
+    'plist.noMatch': 'لا توجد منتجات تطابق عوامل التصفية المحددة.',
     'plist.colName': 'الاسم',
     'plist.colCategory': 'الفئة',
     'plist.colPrice': 'السعر',

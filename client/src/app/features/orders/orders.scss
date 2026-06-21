@@ -1,3 +1,14 @@
+/* The orders table has more columns than the 900px admin container comfortably fits, so this page
+   grows into a wider centred band. The band is clamped to the viewport (minus the container's
+   1.5rem gutters) so it never causes horizontal overflow on narrow screens, and margin-inline
+   centres it over the narrower parent — no hardcoded offsets that encode the container width. */
+:host {
+  display: block;
+  --orders-width: min(1100px, calc(100vw - 3rem));
+  width: var(--orders-width);
+  margin-inline: calc(50% - var(--orders-width) / 2);
+}
+
 .page-header {
   display: flex;
   align-items: center;
@@ -14,6 +25,9 @@
   font-size: 0.85rem;
   color: var(--muted);
 }
+
+/* The admin filter panel (.filters / .filter-field / .search-btn / .clear-filters) is shared —
+   see styles.scss. */
 
 .grid {
   width: 100%;

@@ -171,7 +171,8 @@
 .total strong {
   font-family: var(--font-serif);
   color: var(--ink);
-  font-size: 1.6rem;
+  font-size: 2.4rem;
+  font-weight: 700;
   letter-spacing: 0.02em;
 }
 
@@ -183,4 +184,19 @@
 
 .cart-checkout .btn-ink {
   text-decoration: none;
+  /*
+   * Fix: chromatic ("rainbow") fringing on the button label in dark mode.
+   * Unlike the checkout PLACE ORDER button (width:100%, block-aligned), this
+   * button is shrink-to-fit and right-aligned via the flex wrapper below, so
+   * its box — and the centred glyphs inside it — land on a fractional device
+   * pixel. On Windows that triggers ClearType LCD sub-pixel anti-aliasing,
+   * whose R/G/B sub-pixel coverage shows as orange/blue/purple edges on the
+   * light button in the dark theme. Promoting the label to its own (rounded,
+   * therefore non-opaque) composite layer makes the browser fall back to
+   * grayscale anti-aliasing, so the text renders as a clean solid colour.
+   * Scoped to .cart-checkout so the checkout button is left untouched.
+   */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
 }

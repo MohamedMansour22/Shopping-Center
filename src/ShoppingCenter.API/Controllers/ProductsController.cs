@@ -35,7 +35,8 @@ public class ProductsController : ControllerBase
     {
         page = page < 1 ? 1 : page;
         pageSize = Math.Clamp(pageSize, 1, MaxPageSize);
-        var result = await _productService.GetPagedAsync(page, pageSize, search, includeHidden: false, ct);
+        // The service owns the browse-vs-search merchandising policy (hide sold-out while browsing).
+        var result = await _productService.GetStorefrontPageAsync(page, pageSize, search, ct);
         return Ok(result);
     }
 
@@ -53,12 +54,17 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult<PagedResult<ProductDto>>> GetAllForAdmin(
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = AdminPageSize,
+        [FromQuery] ProductVisibilityFilter visibility = ProductVisibilityFilter.All,
+        [FromQuery] string? name = null,
+        [FromQuery] string? category = null,
         CancellationToken ct = default)
     {
         page = page < 1 ? 1 : page;
         pageSize = Math.Clamp(pageSize, 1, MaxPageSize);
-        // includeHidden: true so the admin list shows hidden products too.
-        var result = await _productService.GetPagedAsync(page, pageSize, search: null, includeHidden: true, ct);
+        // The admin list can show all products, only visible, or only hidden (operator's choice via
+        // the visibility filter), and can narrow by name and/or category; sold-out products stay
+        // visible for stock mgmt.
+        var result = await _productService.GetAdminPageAsync(page, pageSize, visibility, name, category, ct);
         return Ok(result);
     }
 

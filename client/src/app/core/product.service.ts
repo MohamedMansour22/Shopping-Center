@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { PagedResult, Product } from './models';
+import { PagedResult, Product, ProductVisibilityFilter } from './models';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
@@ -24,9 +24,27 @@ export class ProductService {
     return this.http.get<Product>(`${this.baseUrl}/${id}`);
   }
 
-  // Admin reads — include hidden products (require an admin JWT), one server-paginated page at a time.
-  getPageForAdmin(page: number, pageSize: number): Observable<PagedResult<Product>> {
-    const params = new HttpParams().set('page', page).set('pageSize', pageSize);
+  // Admin reads — require an admin JWT, one server-paginated page at a time. The visibility filter
+  // selects all / visible-only / hidden-only products (defaults to all); name and category narrow the
+  // list by those fields (ANDed) when supplied.
+  getPageForAdmin(
+    page: number,
+    pageSize: number,
+    visibility: ProductVisibilityFilter = 'All',
+    filters: { name?: string; category?: string } = {}
+  ): Observable<PagedResult<Product>> {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('pageSize', pageSize)
+      .set('visibility', visibility);
+    const name = filters.name?.trim();
+    if (name) {
+      params = params.set('name', name);
+    }
+    const category = filters.category?.trim();
+    if (category) {
+      params = params.set('category', category);
+    }
     return this.http.get<PagedResult<Product>>(`${this.baseUrl}/admin`, { params });
   }
 

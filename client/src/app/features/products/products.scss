@@ -10,6 +10,9 @@
   margin: 0;
 }
 
+/* The admin filter panel (.filters / .filter-field / .search-btn / .clear-filters) is shared —
+   see styles.scss. */
+
 .btn-primary,
 .btn-secondary {
   display: inline-block;

@@ -1,3 +1,4 @@
+using ShoppingCenter.Application.DTOs;
 using ShoppingCenter.Domain.Entities;
 
 namespace ShoppingCenter.Application.Interfaces;
@@ -7,8 +8,9 @@ public interface IOrderRepository
     Task<Order> AddAsync(Order order, CancellationToken cancellationToken = default);
 
     // Admin list, server-side paginated: one page of orders (newest first) plus the total count.
+    // The filter (date range / customer name / status) is applied to BOTH the page and the count.
     Task<(IReadOnlyList<Order> Items, int TotalCount)> GetPagedAsync(
-        int page, int pageSize, CancellationToken cancellationToken = default);
+        int page, int pageSize, OrderListFilter filter, CancellationToken cancellationToken = default);
 
     // A single order with its items and status, or null if not found.
     Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);

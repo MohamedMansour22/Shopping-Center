@@ -104,6 +104,88 @@ a {
   cursor: not-allowed;
 }
 
+/* Direction-aware back-link arrow (glyph is NOT hardcoded per locale): points in the reading
+   direction — right in LTR/English, left in RTL/Arabic — and flips with the layout. Applied to any
+   element with class="back". margin-inline-start keeps spacing correct in both directions. */
+.back::after {
+  content: '\2192'; /* → */
+  margin-inline-start: 0.4em;
+}
+
+[dir='rtl'] .back::after {
+  content: '\2190'; /* ← */
+}
+
+/* Shared admin filter panel (the orders + products list filter bars use these). */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.1rem;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--text-soft);
+}
+
+.filter-field input,
+.filter-field select {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.filter-field select {
+  cursor: pointer;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+
+.search-btn {
+  padding: 0.5rem 1.1rem;
+  border: 1px solid var(--ink);
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--on-ink);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.search-btn:hover {
+  background: var(--ink-hover);
+}
+
+.clear-filters {
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--bg-warm);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.clear-filters:hover {
+  border-color: var(--ink);
+}
+
 /* Outline / ghost button */
 .btn-line {
   display: inline-flex;
